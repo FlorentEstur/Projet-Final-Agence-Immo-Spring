@@ -13,21 +13,21 @@ import com.inti.model.Location;
 @RestController
 public class ClientController {
 	
-	@Autowired
-	ProducerTemplate producerTemplate;
-	
-	
-	@GetMapping("/getOffreAchat/{id}")
-	public Achat getOffreAchat(@PathVariable int id) 
-	{
-		return producerTemplate.requestBody("direct:selectAchat", null, Achat.class);
-	}
-	
-	@GetMapping("/getOffreLocation/{id}")
-	public Location getOffreLocation(@PathVariable int id) 
-	{
-		return producerTemplate.requestBody("direct:selectLocation", null, Location.class);
-	}
-	
+//	@Autowired
+//	ProducerTemplate producerTemplate;
+//	
+//	
+//	@GetMapping("/getOffreAchat/{id}")
+//	public Achat getOffreAchat(@PathVariable int id) 
+//	{
+//		return producerTemplate.requestBody("direct:selectAchat", null, Achat.class);
+//	}
+//	
+//	@GetMapping("/getOffreLocation/{id}")
+//	public Location getOffreLocation(@PathVariable int id) 
+//	{
+//		return producerTemplate.requestBody("direct:selectLocation", null, Location.class);
+//	}
+//	
 	
 }
