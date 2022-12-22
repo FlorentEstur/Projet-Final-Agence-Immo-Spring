@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +16,19 @@ import com.inti.model.Location;
 import com.inti.repository.IAchatRepository;
 import com.inti.repository.ILocationRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+/*Documentation Javadoc
+ * 
+ * @Author : F. Estur, F. Debeney
+ * 
+ * API REST....
+ */
+
 @RestController
+@RequestMapping("client")
+@Api(value ="Documentation de ClientController", description="cette classe permet de traiter la recherche par le client")
 public class ClientController {
 	
 	
@@ -28,12 +41,14 @@ public class ClientController {
 	
 	//LISTES
 	@GetMapping("listeAchatsClient")
+	@ApiOperation(value = "Récupération de la liste de tous les achats possibles")
 	public List<Achat> listeAchats()
 	{
 		return iAchatRepository.findAll();
 	}
 	
 	@GetMapping("listeLocationsClient")
+	@ApiOperation(value = "Récupération de la liste de toutes les locations possibles")
 	public List<Location> listeLocations()
 	{
 		return iLocationRepository.findAll();
@@ -41,6 +56,7 @@ public class ClientController {
 	
 	//SELECTION DE 1 OFFRE OU LOC
 		@GetMapping("/getAchatClient/{id}")
+		@ApiOperation(value = "Récupération d'un achat avec l'id")
 		public Achat getAchat (@PathVariable int id) 
 		{
 			try {
@@ -52,6 +68,7 @@ public class ClientController {
 		}
 		
 		@GetMapping("/getLocationClient/{id}")
+		@ApiOperation(value = "Récupération d'une location avec l'id")
 		public Location getLocation(@PathVariable int id) 
 		{
 			try {
@@ -64,6 +81,7 @@ public class ClientController {
 		
 		//COMPARAISON
 		@GetMapping("/compareAchat/{id}/{id2}")
+		@ApiOperation(value = "Comparaison de deux achats avec leurs id respectifs")
 		public List<Achat> comparaisonAchat(@PathVariable int id, @PathVariable int id2) 
 		{
 				Achat achat1 = iAchatRepository.findById(id).get();
@@ -75,6 +93,7 @@ public class ClientController {
 		}
 		
 		@GetMapping("/compareLocation/{id}/{id2}")
+		@ApiOperation(value = "Comparaison de deux locations avec leurs id respectifs")
 		public List<Location> comparaisonLocation(@PathVariable int id, @PathVariable int id2) 
 		{
 				Location location1 = iLocationRepository.findById(id).get();
@@ -88,6 +107,7 @@ public class ClientController {
 		//RECHERCHE AVANCEE
 		
 		@GetMapping("/rechercheAchat")
+		@ApiOperation(value = "Recherche avec plusieurs critères")
 		public List<Achat> rechercheAchat (@RequestParam int id, @RequestParam String adresse, @RequestParam String description, @RequestParam int piece, @RequestParam int chambre, @RequestParam double prix_Achat, @RequestParam double surface,@RequestParam boolean ascenceur, @RequestParam boolean parking) 
 		{ 
 			return iAchatRepository.rechercheAchat(id, adresse, description, piece, chambre, prix_Achat, surface, ascenceur, parking);

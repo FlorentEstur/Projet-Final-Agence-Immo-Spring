@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -19,7 +20,19 @@ import com.inti.repository.IAdminRepository;
 import com.inti.repository.IClientRepository;
 import com.inti.repository.IGerantRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+/*Documentation Javadoc
+ * 
+ * @Author : F. Estur, F. Debeney
+ * 
+ * API REST....
+ */
+
 @RestController
+@RequestMapping("admin")
+@Api(value ="Documentation de AdminController", description = "Cette classe permet de traiter les créations de compte.")
 public class AdminController {
 	
 	@Autowired
@@ -33,6 +46,7 @@ public class AdminController {
 	
 	//SAVE
 	@PostMapping("/saveAdmin")
+	@ApiOperation(value = "Sauvegarde d'un compte Admin")
 	public boolean saveAdmin (@RequestBody Admin admin) 
 	{
 		if (admin.getId() > 0) 
@@ -44,6 +58,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/saveClient")
+	@ApiOperation(value = "Sauvegarde d'un compte Client")
 	public boolean saveClient (@RequestBody Client client) 
 	{
 		if (client.getId() > 0) 
@@ -55,6 +70,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/saveGerant")
+	@ApiOperation(value = "Sauvegarde d'un compte Gérant")
 	public boolean saveClient (@RequestBody Gerant gerant) 
 	{
 		if (gerant.getId() > 0) 
@@ -67,18 +83,21 @@ public class AdminController {
 	
 	//LISTES
 	@GetMapping("/listeAdmin")
+	@ApiOperation(value = "Récupération de la liste de tous les admins")
 	public List<Admin> listeAdmins()
 	{
 		return iAdminRepository.findAll();
 	}
 	
-	@GetMapping("/http://localhost:8080/listeAdmin")
+	@GetMapping("/listeClient")
+	@ApiOperation(value = "Récupération de la liste de tous les clients")
 	public List<Client> listeClients()
 	{
 		return iClientRepository.findAll();
 	}
 	
 	@GetMapping("/listeGerant")
+	@ApiOperation(value = "Récupération de la liste de tous les gérants")
 	public List<Gerant> listeGerants()
 	{
 		return iGerantRepository.findAll();
@@ -87,6 +106,7 @@ public class AdminController {
 	//SELECTION DE 1 OBJET
 	
 	@GetMapping("/getAdmin/{id}")
+	@ApiOperation(value = "Récupération d'un admin avec l'id")
 	public Admin getAdmin(@PathVariable int id) 
 	{
 		{
@@ -101,6 +121,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/getClient/{id}")
+	@ApiOperation(value = "Récupération d'un client avec l'id")
 	public Client getClient(@PathVariable int id) 
 	{
 		{
@@ -115,6 +136,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/getGerant/{id}")
+	@ApiOperation(value = "Récupération d'un gérant avec l'id")
 	public Gerant getGerant(@PathVariable int id) 
 	{
 		{
@@ -130,6 +152,7 @@ public class AdminController {
 	
 	//DELETE
 	@DeleteMapping("/deleteAdmin/{id}")
+	@ApiOperation(value = "Suppression d'un admin avec l'id")
 	public boolean deleteAdmin(@PathVariable int id) 
 	{
 		if (id!=0) 
@@ -141,6 +164,7 @@ public class AdminController {
 	}
 	
 	@DeleteMapping("/deleteClient/{id}")
+	@ApiOperation(value = "Suppression d'un client avec l'id")
 	public boolean deleteClient(@PathVariable int id) 
 	{
 		if (id!=0) 
@@ -152,6 +176,7 @@ public class AdminController {
 	}
 	
 	@DeleteMapping("/deleteGerant/{id}")
+	@ApiOperation(value = "Suppression d'un gérant avec l'id")
 	public boolean deleteGerant(@PathVariable int id) 
 	{
 		if (id!=0) 
@@ -164,6 +189,7 @@ public class AdminController {
 	
 	//UPDATE
 	@PutMapping ("/updateAdmin/{id}")
+	@ApiOperation(value = "Mise à jour d'un admin avec l'id")
 	public Admin updateAdmin(@RequestBody Admin nouvelAdmin, @PathVariable int id) {
 		return iAdminRepository.findById(id).map(Admin -> {
 			Admin.setId(nouvelAdmin.getId());
@@ -177,6 +203,7 @@ public class AdminController {
 		
 	}	
 		@PutMapping ("/updateClient/{id}")
+		@ApiOperation(value = "Mise à jour d'un client avec l'id")
 		public Client updateClient(@RequestBody Client nouveauClient, @PathVariable int id) {
 			return iClientRepository.findById(id).map(Client -> {
 				Client.setId(nouveauClient.getId());
@@ -191,6 +218,7 @@ public class AdminController {
 	}
 		
 		@PutMapping ("/updateGerant/{id}")
+		@ApiOperation(value = "Mise à jour d'un gérant avec l'id")
 		public Gerant updateGerant(@RequestBody Gerant nouveauGerant, @PathVariable int id) {
 			return iGerantRepository.findById(id).map(Gerant -> {
 				Gerant.setId(nouveauGerant.getId());

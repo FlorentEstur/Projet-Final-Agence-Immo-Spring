@@ -2,7 +2,6 @@ package com.inti.controller;
 
 import java.util.List;
 
-import org.apache.camel.ProducerTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inti.model.Achat;
 import com.inti.model.Location;
 import com.inti.repository.IAchatRepository;
-import com.inti.repository.IGerantRepository;
 import com.inti.repository.ILocationRepository;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+/*Documentation Javadoc
+ * 
+ * @Author : F. Estur, F. Debeney
+ * 
+ * API REST....
+ */
+
 @RestController
+@RequestMapping("gerant")
+@Api(value ="Documentation de GerantController", description = "Cette classe permet de traiter les achats et locations par le gérant.")
 public class GerantController {
 
 	@Autowired
@@ -35,6 +45,7 @@ public class GerantController {
 	
 	//SAVE
 	@PostMapping("/saveAchat")
+	@ApiOperation(value = "Sauvegarde d'un achat")
 	public boolean saveAchat (@RequestBody Achat achat) 
 	{
 		if (achat.getId()>0) 
@@ -46,6 +57,7 @@ public class GerantController {
 	}
 	
 	@PostMapping("/saveLocation")
+	@ApiOperation(value = "Sauvegarde d'une location")
 	public boolean saveLocation (@RequestBody Location location) 
 	{
 		if (location.getId()>0) 
@@ -59,12 +71,14 @@ public class GerantController {
 	//LISTES
 	
 	@GetMapping("listeAchats")
+	@ApiOperation(value = "Récupération de tous les achats")
 	public List<Achat> listeAchats()
 	{
 		return iAchatRepository.findAll();
 	}
 	
 	@GetMapping("listeLocations")
+	@ApiOperation(value = "Récupération de toutes les locations")
 	public List<Location> listeLocations()
 	{
 		return iLocationRepository.findAll();
@@ -72,6 +86,7 @@ public class GerantController {
 	
 	//SELECTION DE 1 OFFRE OU LOC
 	@GetMapping("/getAchat/{id}")
+	@ApiOperation(value = "Récupération d'un achat avec l'id")
 	public Achat getAchat (@PathVariable int id) 
 	{
 		try {
@@ -83,6 +98,7 @@ public class GerantController {
 	}
 	
 	@GetMapping("/getLocation/{id}")
+	@ApiOperation(value = "Récupération d'une location avec l'id")
 	public Location getLocation(@PathVariable int id) 
 	{
 		try {
@@ -95,6 +111,7 @@ public class GerantController {
 	
 	//DELETE
 	@DeleteMapping("/deleteAchat/{id}")
+	@ApiOperation(value = "Suppression d'un achat avec l'id")
 	public boolean deleteAchat (@PathVariable int id) 
 	{
 		if (id != 0) 
@@ -106,6 +123,7 @@ public class GerantController {
 	}
 	
 	@DeleteMapping("/deleteLocation/{id}")
+	@ApiOperation(value = "Suppression d'une location avec l'id")
 	public boolean deleteLocation(@PathVariable int id) 
 	{
 		if (id != 0) 
@@ -118,6 +136,7 @@ public class GerantController {
 	
 	//UPDATE	
 	@PutMapping ("/updateAchat/{id}")
+	@ApiOperation(value = "Mise à jour d'un achat avec l'id")
 	public Achat updateAchat(@RequestBody Achat nouvelAchat, @PathVariable int id) {
 		return iAchatRepository.findById(id).map(Achat -> {
 			Achat.setId(nouvelAchat.getId());
@@ -137,6 +156,7 @@ public class GerantController {
 	}
 	
 	@PutMapping ("/updateLocation/{id}")
+	@ApiOperation(value = "Mise à jour d'une location avec l'id")
 	public Location updateLocation(@RequestBody Location nouvelleLocation, @PathVariable int id) {
 		return iLocationRepository.findById(id).map(Location -> {
 			Location.setId(nouvelleLocation.getId());
