@@ -22,6 +22,8 @@ import com.inti.repository.IGerantRepository;
 import com.inti.repository.ILocationRepository;
 
 @RestController
+@RequestMapping("gerant")
+//@Api()
 public class GerantController {
 
 	@Autowired
