@@ -3,7 +3,7 @@ package com.inti.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.camel.ProducerTemplate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inti.model.Achat;
-import com.inti.model.Client;
 import com.inti.model.Location;
 import com.inti.repository.IAchatRepository;
 import com.inti.repository.ILocationRepository;
@@ -89,10 +88,29 @@ public class ClientController {
 		//RECHERCHE AVANCEE
 		
 		@GetMapping("/rechercheAchat")
-		public List<Achat> rechercheAchat (@RequestParam int id, @RequestParam String adresse, @RequestParam String description, @RequestParam int piece, @RequestParam int chambre, @RequestParam double prixAchat, @RequestParam double surface,@RequestParam boolean ascenceur, @RequestParam boolean parking) 
+		public List<Achat> rechercheAchat (@RequestParam int id, @RequestParam String adresse, @RequestParam String description, @RequestParam int piece, @RequestParam int chambre, @RequestParam double prix_Achat, @RequestParam double surface,@RequestParam boolean ascenceur, @RequestParam boolean parking) 
 		{ 
-			return iAchatRepository.rechercheAchat(id, adresse, description, piece, chambre, prixAchat, surface, ascenceur, parking);
+			return iAchatRepository.rechercheAchat(id, adresse, description, piece, chambre, prix_Achat, surface, ascenceur, parking);
 		}
+		
+		@GetMapping("/rechercheAchatVille")
+		public List<Achat> rechercheAchatVille( @RequestParam String adresse)
+		{
+			return iAchatRepository.rechercheAchatVille(adresse);
+		}
+		
+		@GetMapping("/rechercheAchatVilleType")
+		public List<Achat> rechercheAchatVilleType( @RequestParam String adresse, @RequestParam String description)
+		{
+			return iAchatRepository.rechercheAchatVilleType(adresse, description);
+		}
+		
+		@GetMapping("/rechercheAchatPieceChambre")
+		public List<Achat> rechercheAchatPieceChambre( @RequestParam int piece, @RequestParam int chambre)
+		{
+			return iAchatRepository.rechercheAchatPieceChambre(piece, chambre);
+		}
+		
 		
 		
 		
