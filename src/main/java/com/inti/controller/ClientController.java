@@ -104,7 +104,7 @@ public class ClientController {
 				return listeLocation;			
 		}
 		
-		//RECHERCHE AVANCEE
+		//RECHERCHE AVANCEE ACHAT
 		
 		@GetMapping("/rechercheAchat")
 		@ApiOperation(value = "Recherche avec plusieurs critères")
@@ -131,7 +131,31 @@ public class ClientController {
 			return iAchatRepository.rechercheAchatPieceChambre(piece, chambre);
 		}
 		
+		//RECHERCHE AVANCEE LOCATION
+		@GetMapping("/rechercheLocation")
+		public List<Location> rechercheLocation(@RequestParam int id, @RequestParam String adresse, @RequestParam String description, @RequestParam int piece, @RequestParam int chambre, @RequestParam double prix_Par_Mois, @RequestParam double surface,@RequestParam boolean ascenceur, @RequestParam boolean parking) 
+		{ 
+			return iLocationRepository.rechercheLocation(id, adresse, description, piece, chambre, prix_Par_Mois, surface, ascenceur, parking);
+		}
 		
+		@GetMapping("/rechercheLocationVille")
+		public List<Location> rechercheLocationVille( @RequestParam String adresse)
+		{
+			return iLocationRepository.rechercheLocationVille(adresse);
+		}
+		
+		@GetMapping("/rechercheLocationLoyerSurface")
+		public List<Location> rechercheLocationLoyerEtSurface(@RequestParam double prix_Par_Mois, @RequestParam double surface)
+		{
+			return iLocationRepository.rechercheLocationLoyerEtSurface(prix_Par_Mois, surface);
+		}
+		
+		
+		@GetMapping("/rechercheLocationAscenceurParking")
+		public List<Location> rechercheLocationAscenceurParking(@RequestParam boolean ascenceur, @RequestParam boolean parking)
+		{
+			return iLocationRepository.rechercheLocationAscenceurParking(ascenceur, parking);
+		}
 		
 		
 		
