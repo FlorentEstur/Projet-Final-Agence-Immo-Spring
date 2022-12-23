@@ -50,9 +50,11 @@ public class GerantController {
 	{
 		if (achat.getId()>0) 
 		{
+			logA.info("Enregistrement d'une nouvelle offre d'Achat");
 			iAchatRepository.save(achat);
 			return true;
 		}
+		logA.error("Enregistrement d'une nouvelle offre d'Achat échoué");
 		return false;
 	}
 	
@@ -62,9 +64,11 @@ public class GerantController {
 	{
 		if (location.getId()>0) 
 		{
+			logL.info("Enregistrement d'une nouvelle offre de Location");
 			iLocationRepository.save(location);
 			return true;
 		}
+		logL.error("Enregistrement d'une nouvelle offre Location échoué");
 		return false;
 	}
 	
@@ -74,6 +78,7 @@ public class GerantController {
 	@ApiOperation(value = "Récupération de tous les achats")
 	public List<Achat> listeAchats()
 	{
+		logA.info("Affichage de toutes les offres d'Achat");
 		return iAchatRepository.findAll();
 	}
 	
@@ -81,6 +86,7 @@ public class GerantController {
 	@ApiOperation(value = "Récupération de toutes les locations")
 	public List<Location> listeLocations()
 	{
+		logL.info("Affichage de toutes les offres de Location");
 		return iLocationRepository.findAll();
 	}
 	
@@ -90,10 +96,12 @@ public class GerantController {
 	public Achat getAchat (@PathVariable int id) 
 	{
 		try {
+			logA.info("Affichage d'une offre d'Achat selon son ID");
 			return iAchatRepository.findById(id).get();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		logA.error("Affichage d'une offre d'Achat selon son ID échoué");
 		return null;
 	}
 	
@@ -102,10 +110,12 @@ public class GerantController {
 	public Location getLocation(@PathVariable int id) 
 	{
 		try {
+			logL.info("Affichage d'une offre de Location selon son ID");
 			return iLocationRepository.findById(id).get();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		logL.error("Affichage d'une offre de Location selon son ID échoué");
 		return null;
 	}
 	
@@ -116,9 +126,11 @@ public class GerantController {
 	{
 		if (id != 0) 
 		{
+			logA.info("Suppression d'une offre d'Achat");
 			iAchatRepository.deleteById(id);
 			return true;
 		}
+		logA.error("Suppression d'une offre d'Achat échoué");
 		return false;
 	}
 	
@@ -128,9 +140,11 @@ public class GerantController {
 	{
 		if (id != 0) 
 		{
+			logL.info("Suppression d'une offre de Location");
 			iLocationRepository.deleteById(id);
 			return true;
 		}
+		logL.error("Suppression d'une offre de Location échoué");
 		return false;
 	}
 	
@@ -138,6 +152,7 @@ public class GerantController {
 	@PutMapping ("/updateAchat/{id}")
 	@ApiOperation(value = "Mise à jour d'un achat avec l'id")
 	public Achat updateAchat(@RequestBody Achat nouvelAchat, @PathVariable int id) {
+		logA.info("Update d'une offre d'Achat");
 		return iAchatRepository.findById(id).map(Achat -> {
 			Achat.setId(nouvelAchat.getId());
 			Achat.setAdresse(nouvelAchat.getAdresse());
@@ -158,6 +173,7 @@ public class GerantController {
 	@PutMapping ("/updateLocation/{id}")
 	@ApiOperation(value = "Mise à jour d'une location avec l'id")
 	public Location updateLocation(@RequestBody Location nouvelleLocation, @PathVariable int id) {
+		logL.info("Update d'une offre de Location");
 		return iLocationRepository.findById(id).map(Location -> {
 			Location.setId(nouvelleLocation.getId());
 			Location.setAdresse(nouvelleLocation.getAdresse());

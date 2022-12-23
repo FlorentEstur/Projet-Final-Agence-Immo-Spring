@@ -2,6 +2,8 @@ package com.inti.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +46,10 @@ public class AdminController {
 	@Autowired
 	IAdminRepository iAdminRepository;
 	
+	private final Logger logC = LoggerFactory.getLogger(Client.class);
+	private final Logger logG = LoggerFactory.getLogger(Gerant.class);
+	private final Logger logA = LoggerFactory.getLogger(Admin.class);
+	
 	//SAVE
 	@PostMapping("/saveAdmin")
 	@ApiOperation(value = "Sauvegarde d'un compte Admin")
@@ -51,9 +57,11 @@ public class AdminController {
 	{
 		if (admin.getId() > 0) 
 		{
+			logA.info("Enregistrement d'un nouvel Admin");
 			iAdminRepository.save(admin);
 			return true;
 		}
+		logA.error("Enregistrement d'un nouvel Admin échoué");
 		return false;
 	}
 	
@@ -63,9 +71,11 @@ public class AdminController {
 	{
 		if (client.getId() > 0) 
 		{
+			logC.info("Enregistrement d'un nouveau Client");
 			iClientRepository.save(client);
 			return true;
 		}
+		logC.error("Enregistrement d'un nouveau Client échoué");
 		return false;
 	}
 	
@@ -75,9 +85,11 @@ public class AdminController {
 	{
 		if (gerant.getId() > 0) 
 		{
+			logG.info("Enregistrement d'un nouveau Gerant");
 			iGerantRepository.save(gerant);
 			return true;
 		}
+		logG.error("Enregistrement d'un nouveau Gerant échoué");
 		return false;
 	}
 	
@@ -86,6 +98,7 @@ public class AdminController {
 	@ApiOperation(value = "Récupération de la liste de tous les admins")
 	public List<Admin> listeAdmins()
 	{
+		logA.info("Affichage de la liste de tous les admins");
 		return iAdminRepository.findAll();
 	}
 	
@@ -93,6 +106,7 @@ public class AdminController {
 	@ApiOperation(value = "Récupération de la liste de tous les clients")
 	public List<Client> listeClients()
 	{
+		logC.info("Affichage de la liste de tous les Client");
 		return iClientRepository.findAll();
 	}
 	
@@ -100,6 +114,7 @@ public class AdminController {
 	@ApiOperation(value = "Récupération de la liste de tous les gérants")
 	public List<Gerant> listeGerants()
 	{
+		logG.info("Affichage de la liste de tous les Gerants");
 		return iGerantRepository.findAll();
 	}
 	
@@ -111,10 +126,12 @@ public class AdminController {
 	{
 		{
 			try {
+				logA.info("Affichage d'un Admin selon son ID");
 				return iAdminRepository.findById(id).get();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			logA.error("Affichage d'un Admin selon son ID échoué");
 			return null;
 		}
 		
@@ -126,10 +143,12 @@ public class AdminController {
 	{
 		{
 			try {
+				logC.info("Affichage d'un Client selon son ID");
 				return iClientRepository.findById(id).get();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			logC.error("Affichage d'un Client selon son ID échoué");
 			return null;
 		}
 		
@@ -141,10 +160,12 @@ public class AdminController {
 	{
 		{
 			try {
+				logG.info("Affichage d'un Gerant selon son ID");
 				return iGerantRepository.findById(id).get();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			logC.error("Affichage d'un Gerant selon son ID échoué");
 			return null;
 		}
 		
@@ -157,9 +178,11 @@ public class AdminController {
 	{
 		if (id!=0) 
 		{
+			logA.info("Suppresion d'un Admin");
 			iAdminRepository.deleteById(id);
 			return true;
 		}
+		logA.error("Suppresion d'un Admin échoué");
 		return false;
 	}
 	
@@ -169,9 +192,11 @@ public class AdminController {
 	{
 		if (id!=0) 
 		{
+			logC.info("Suppresion d'un Client");
 			iClientRepository.deleteById(id);
 			return true;
 		}
+		logC.error("Suppresion d'un Client échoué");
 		return false;
 	}
 	
@@ -181,9 +206,11 @@ public class AdminController {
 	{
 		if (id!=0) 
 		{
+			logG.info("Suppresion d'un Gerant");
 			iGerantRepository.deleteById(id);
 			return true;
 		}
+		logG.error("Suppresion d'un Gerant échoué");
 		return false;
 	}
 	
@@ -191,6 +218,7 @@ public class AdminController {
 	@PutMapping ("/updateAdmin/{id}")
 	@ApiOperation(value = "Mise à jour d'un admin avec l'id")
 	public Admin updateAdmin(@RequestBody Admin nouvelAdmin, @PathVariable int id) {
+		logA.info("Update d'un Admin");
 		return iAdminRepository.findById(id).map(Admin -> {
 			Admin.setId(nouvelAdmin.getId());
 			Admin.setNom(nouvelAdmin.getNom());
@@ -205,6 +233,7 @@ public class AdminController {
 		@PutMapping ("/updateClient/{id}")
 		@ApiOperation(value = "Mise à jour d'un client avec l'id")
 		public Client updateClient(@RequestBody Client nouveauClient, @PathVariable int id) {
+			logC.info("Update d'un Client");
 			return iClientRepository.findById(id).map(Client -> {
 				Client.setId(nouveauClient.getId());
 				Client.setNom(nouveauClient.getNom());
@@ -220,6 +249,7 @@ public class AdminController {
 		@PutMapping ("/updateGerant/{id}")
 		@ApiOperation(value = "Mise à jour d'un gérant avec l'id")
 		public Gerant updateGerant(@RequestBody Gerant nouveauGerant, @PathVariable int id) {
+			logG.info("Update d'un Gerant");
 			return iGerantRepository.findById(id).map(Gerant -> {
 				Gerant.setId(nouveauGerant.getId());
 				Gerant.setNom(nouveauGerant.getNom());

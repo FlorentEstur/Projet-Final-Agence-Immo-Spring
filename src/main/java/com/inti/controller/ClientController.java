@@ -3,7 +3,8 @@ package com.inti.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,12 +39,16 @@ public class ClientController {
 	@Autowired
 	ILocationRepository iLocationRepository;
 	
+	private final Logger logA = LoggerFactory.getLogger(Achat.class);
+	private final Logger logL = LoggerFactory.getLogger(Location.class);
+	
 	
 	//LISTES
 	@GetMapping("listeAchatsClient")
 	@ApiOperation(value = "Récupération de la liste de tous les achats possibles")
 	public List<Achat> listeAchats()
 	{
+		logA.info("Affichage de toutes les offres d'Achat");
 		return iAchatRepository.findAll();
 	}
 	
@@ -51,6 +56,7 @@ public class ClientController {
 	@ApiOperation(value = "Récupération de la liste de toutes les locations possibles")
 	public List<Location> listeLocations()
 	{
+		logL.info("Affichage de toutes les offres de Location");
 		return iLocationRepository.findAll();
 	}
 	
@@ -60,10 +66,12 @@ public class ClientController {
 		public Achat getAchat (@PathVariable int id) 
 		{
 			try {
+				logA.info("Affichage d'une offre d'Achat selon son ID");
 				return iAchatRepository.findById(id).get();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			logA.error("Affichage d'une offre d'Achat selon son ID échoué");
 			return null;
 		}
 		
@@ -72,10 +80,12 @@ public class ClientController {
 		public Location getLocation(@PathVariable int id) 
 		{
 			try {
+				logL.info("Affichage d'une offre de Location selon son ID");
 				return iLocationRepository.findById(id).get();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			logL.error("Affichage d'une offre de Location selon son ID échoué");
 			return null;
 		}
 		
@@ -89,6 +99,7 @@ public class ClientController {
 				List<Achat> listeachAchats = new ArrayList<>();
 				listeachAchats.add(achat1);
 				listeachAchats.add(achat2);
+				logA.info("Comparaison de 2 offres d'Achat");
 				return listeachAchats;			
 		}
 		
@@ -101,6 +112,7 @@ public class ClientController {
 				List<Location> listeLocation = new ArrayList<>();
 				listeLocation.add(location1);
 				listeLocation.add(location2);
+				logL.info("Comparaison de 2 offres de Location");
 				return listeLocation;			
 		}
 		
@@ -110,24 +122,28 @@ public class ClientController {
 		@ApiOperation(value = "Recherche avec plusieurs critères")
 		public List<Achat> rechercheAchat (@RequestParam int id, @RequestParam String adresse, @RequestParam String description, @RequestParam int piece, @RequestParam int chambre, @RequestParam double prix_Achat, @RequestParam double surface,@RequestParam boolean ascenceur, @RequestParam boolean parking) 
 		{ 
+			logA.info("Recherche d'une offre d'Achat grâce à tous ses paramètres");
 			return iAchatRepository.rechercheAchat(id, adresse, description, piece, chambre, prix_Achat, surface, ascenceur, parking);
 		}
 		
 		@GetMapping("/rechercheAchatVille")
 		public List<Achat> rechercheAchatVille( @RequestParam String adresse)
 		{
+			logA.info("Recherche d'une offre d'Achat par Ville");
 			return iAchatRepository.rechercheAchatVille(adresse);
 		}
 		
 		@GetMapping("/rechercheAchatVilleType")
 		public List<Achat> rechercheAchatVilleType( @RequestParam String adresse, @RequestParam String description)
 		{
+			logA.info("Recherche d'une offre d'Achat par Ville et Type");
 			return iAchatRepository.rechercheAchatVilleType(adresse, description);
 		}
 		
 		@GetMapping("/rechercheAchatPieceChambre")
 		public List<Achat> rechercheAchatPieceChambre( @RequestParam int piece, @RequestParam int chambre)
 		{
+			logA.info("Recherche d'une offre d'Achat par nombre de Piece et de Chambre");
 			return iAchatRepository.rechercheAchatPieceChambre(piece, chambre);
 		}
 		
@@ -135,18 +151,21 @@ public class ClientController {
 		@GetMapping("/rechercheLocation")
 		public List<Location> rechercheLocation(@RequestParam int id, @RequestParam String adresse, @RequestParam String description, @RequestParam int piece, @RequestParam int chambre, @RequestParam double prix_Par_Mois, @RequestParam double surface,@RequestParam boolean ascenceur, @RequestParam boolean parking) 
 		{ 
+			logL.info("Recherche d'une offre de Location grâce à tous ses paramètres");
 			return iLocationRepository.rechercheLocation(id, adresse, description, piece, chambre, prix_Par_Mois, surface, ascenceur, parking);
 		}
 		
 		@GetMapping("/rechercheLocationVille")
 		public List<Location> rechercheLocationVille( @RequestParam String adresse)
 		{
+			logL.info("Recherche d'une offre de Location par Ville");
 			return iLocationRepository.rechercheLocationVille(adresse);
 		}
 		
 		@GetMapping("/rechercheLocationLoyerSurface")
 		public List<Location> rechercheLocationLoyerEtSurface(@RequestParam double prix_Par_Mois, @RequestParam double surface)
 		{
+			logL.info("Recherche d'une offre de Location par Loyer et Surface");
 			return iLocationRepository.rechercheLocationLoyerEtSurface(prix_Par_Mois, surface);
 		}
 		
@@ -154,6 +173,7 @@ public class ClientController {
 		@GetMapping("/rechercheLocationAscenceurParking")
 		public List<Location> rechercheLocationAscenceurParking(@RequestParam boolean ascenceur, @RequestParam boolean parking)
 		{
+			logL.info("Recherche d'une offre de Location par présence d'un ascenceur et/ou d'un parking");
 			return iLocationRepository.rechercheLocationAscenceurParking(ascenceur, parking);
 		}
 		
