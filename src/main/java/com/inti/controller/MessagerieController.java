@@ -84,7 +84,7 @@ public class MessagerieController {
 		connection.start();
 		
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		Destination destination = session.createQueue("Florent_Question_Etudiant");
+		Destination destination = session.createQueue("Florent_Projet_Question");
 		MessageConsumer consumer = session.createConsumer(destination);
 		
 		consumer.setMessageListener(new Listener());
@@ -100,7 +100,7 @@ public class MessagerieController {
 		connection.start();
 		
 		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		Destination destination = session.createQueue("Florent_Reponse_Prof");
+		Destination destination = session.createQueue("Florent_Projet_Reponse");
 		MessageConsumer consumer = session.createConsumer(destination);
 		
 		consumer.setMessageListener(new Listener());
