@@ -5,10 +5,8 @@ import java.util.Scanner;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.inti.model.Listener;
 import com.inti.route.SimpleRouteBuilder;
 
 import io.swagger.annotations.Api;
@@ -75,6 +74,38 @@ public class MessagerieController {
 			choix = Integer.parseInt(scan.nextLine());
 		} while (choix == 1);
 		context.stop();
+	}
+	
+	@GetMapping("/listenerQuestion")
+	@ApiOperation(value = "Permet de lancer le listener des questions")
+	public void listenerQuestion() throws Exception {
+		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://194.206.91.85:61616");
+		Connection connection = connectionFactory.createConnection("admin", "adaming");
+		connection.start();
+		
+		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		Destination destination = session.createQueue("Florent_Question_Etudiant");
+		MessageConsumer consumer = session.createConsumer(destination);
+		
+		consumer.setMessageListener(new Listener());
+		Thread.sleep(10000);
+		consumer.close();
+	}
+	
+	@GetMapping("/listenerReponse")
+	@ApiOperation(value = "Permet de lancer le listener des réponses")
+	public void listenerReponse() throws Exception {
+		ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://194.206.91.85:61616");
+		Connection connection = connectionFactory.createConnection("admin", "adaming");
+		connection.start();
+		
+		Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		Destination destination = session.createQueue("Florent_Reponse_Prof");
+		MessageConsumer consumer = session.createConsumer(destination);
+		
+		consumer.setMessageListener(new Listener());
+		Thread.sleep(10000);
+		consumer.close();
 	}
 
 }
