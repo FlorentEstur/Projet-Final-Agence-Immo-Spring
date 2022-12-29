@@ -17,10 +17,8 @@ public class SwaggerConfig {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.inti.controller"))
-				.paths(PathSelectors.regex("/gerant"))
-				.paths(PathSelectors.regex("/client"))
-				.paths(PathSelectors.regex("/admin"))
+				.apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any())
 				.build();
 	}
 }
