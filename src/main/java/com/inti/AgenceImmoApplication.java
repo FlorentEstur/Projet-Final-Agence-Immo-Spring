@@ -9,7 +9,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.inti.route.SimpleRouteBuilder;
+import com.inti.route.SimpleRouteBuilder1;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -24,7 +24,7 @@ public class AgenceImmoApplication {
 		connectionFactory.createConnection("admin", "adaming2022");
 		
 		context.addComponent("jms", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-		context.addRoutes(new SimpleRouteBuilder());
+		context.addRoutes(new SimpleRouteBuilder1());
 		
 	}
 

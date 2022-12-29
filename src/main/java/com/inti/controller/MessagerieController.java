@@ -13,14 +13,13 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.component.jms.JmsComponent;
 import org.apache.camel.impl.DefaultCamelContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.inti.model.Listener;
-import com.inti.route.SimpleRouteBuilder;
+import com.inti.route.SimpleRouteBuilder1;
+import com.inti.route.SimpleRouteBuilder2;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,9 +28,6 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("messagerie")
 @Api(value ="Documentation de MessagerieController", description = "Cette classe permet de traiter les messages des clients et les réponses des gérants.")
 public class MessagerieController {
-
-	@Autowired
-	JmsTemplate jmsTemplate;
 	
 	CamelContext context = new DefaultCamelContext();
 	ProducerTemplate producerTemplate = context.createProducerTemplate();
@@ -47,7 +43,7 @@ public class MessagerieController {
 	public void question() throws Exception {
 		connectionFactory.createConnection("admin", "adaming2022");
 		context.addComponent("jms", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-		context.addRoutes(new SimpleRouteBuilder());
+		context.addRoutes(new SimpleRouteBuilder1());
 		context.start();
 		do {
 			System.out.println("Posez votre question :");
@@ -64,7 +60,7 @@ public class MessagerieController {
 	public void reponse() throws Exception {
 		connectionFactory.createConnection("admin", "adaming2022");
 		context.addComponent("jms", JmsComponent.jmsComponentAutoAcknowledge(connectionFactory));
-		context.addRoutes(new SimpleRouteBuilder());
+		context.addRoutes(new SimpleRouteBuilder2());
 		context.start();
 		do {
 			System.out.println("Envoyer votre réponse :");
@@ -90,6 +86,8 @@ public class MessagerieController {
 		consumer.setMessageListener(new Listener());
 		Thread.sleep(10000);
 		consumer.close();
+		session.close();
+		connection.stop();
 	}
 	
 	@GetMapping("/listenerReponse")
@@ -106,6 +104,8 @@ public class MessagerieController {
 		consumer.setMessageListener(new Listener());
 		Thread.sleep(10000);
 		consumer.close();
+		session.close();
+		connection.stop();
 	}
 
 }
